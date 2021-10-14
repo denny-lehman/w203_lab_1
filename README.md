@@ -1,2 +1,3 @@
-# w203_lab_1
-the repo for the first W203 lab in Fall of 2021
+# Lab 1 
+
+This repository holds the materials for the first lab in UC Berkeley MIDS w203.
