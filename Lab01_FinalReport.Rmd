@@ -64,7 +64,7 @@ anes_2020_subset_filtered <- anes_2020_subset%>%
 #anes_2020_subset_filtered
 ```
 
-```{r final dataset, echo=FALSE, include=FALSE}
+```{r final dataset, echo=FALSE}
 ANES <- anes_2020_subset_filtered %>% 
   mutate(
     Political_Party = case_when(
@@ -92,7 +92,7 @@ Our data comes from the 2020 Time Series Study performed by the survey firm, Wes
 Additionally, all sample members who completed the post-election survey from the ANES 2016 Time Series Study were invited to participate in the 2020 survey online. This survey data was merged using the case ID variable to join the two datasets.
 
 In order to operationalize the concept of difficulty voting, we first identify the Democratic and Republican voters. Per guidance from an article written by political scientists\footnote{https://www.sciencedirect.com/journal/electoral-studies}, we group voters into political parties by the direction they "lean." In other words, a voter that indicates they "lean democratic" is classified as a Democrat and vice versa. The tables below describe these distributions.
-
+## Add concern with sample universe for difficulty question
 ### Insert Distribution Table Here
 ```{r Table, echo=FALSE, results='asis'}
 tbl <- table(ANES$Political_Party)
@@ -173,7 +173,7 @@ For this t-test, the following assumptions must be true:
 
   \item \textbf{Metric scale}  Even though our raw data includes ordinal variables, we have transformed them to binary form.  A binary variable qualifies as metric as there is only a single interval, which goes from zero to 1.
   
-  \item \textbf{Sufficient normality} The small number of new voters can be understood as a positive skew in our turnout variable (skewness = `r round(skewness(anes$new_voter),2)`).  Nevertheless, the large sample size suggests that the sampling distribution of the statistic should be approximately normal via the Central Limit Theorem. 
+  \item \textbf{Sufficient normality}  
 \end{enumerate}
 # Results
 ```{r unpaired two sample t-test , echo=TRUE, results='hide'}
