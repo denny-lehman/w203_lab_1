@@ -35,60 +35,78 @@ $$\alpha = P(reject \space Ho|Ho)$$
 We are given that Ho is when p = 1/2. p is the probability that Xi = Yi
 
 $$ H_o: p=\frac{1}{2}, \space p=P(X_i = Y_i)$$
+Let's define a trial as flipping both coins at the same time, where coin X has outcomes 0 and 1 and coin Y has 0 and 1
+$$
+X \in \{0,1\} \\
+Y \in \{0,1\} \\
+\text{Probability of a trial}\\
+\theta_i = \text{outcome of two coin flips}\\
+Event \space space \space of \space \theta_i\\
+\theta_i \in \{\{0,0\},\{0,1\},\{1,0\},\{1,1\}\}\\
+P(X=0) = \frac{1}{2} \\
+P(Y=0) = \frac{1}{2} \\
+P(X=1) = \frac{1}{2} \\
+P(Y=1) = \frac{1}{2} \\
+P(X=x,Y=y) = P(X=x)*P(Y=y)
+
+$$
+
+If we break down that p statement, we can identify a 
+
 We know that each flip of the pair has the following potential outcomes:
 $$
-P(X_i=Y_i) = P(X=0,Y=0) + P(X=1,Y=1)\\
-P(X_i=Y_i|H_o) = 0.5 = P(X=0,Y=0) + P(X=1,Y=1)\\
-P(X=0,Y=0)=\frac{1}{4}\\
-P(X=1,Y=1)=\frac{1}{4}
+P(X_i=Y_i) = P(X_i=0,Y_i=0) + P(X_i=1,Y_i=1)\\
+P(X_i=Y_i|H_o) = 0.5 = P(X_i=0,Y_i=0) + P(X_i=1,Y_i=1)\\
+P(X_i=0,Y_i=0)=\frac{1}{4}\\
+P(X_i=1,Y_i=1)=\frac{1}{4}
 $$
 We are also given that our test statistic, theta_hat, will be equal to 
 
 $$
-\theta =X_1 +Y_1+X_2+Y_2+X_3+Y_3
+\theta_i = X_i+Y_i\\
+\theta_3 =X_1 +Y_1+X_2+Y_2+X_3+Y_3
 $$
 
 From the problem definition, we reject the null when our test statistic theta is 0 or 6 after 3 flips of pairs of coins. Type I error is thus
 $$
 \alpha = P(reject \space Ho|Ho)\\
-\alpha = P(\theta \in \set_{0,6} |p=\frac{1}{2})\\
-\alpha = P(\theta=0|p=\frac{1}{2})+P(\theta=6|p=\frac{1}{2})
+\alpha = P(\theta_3 \in \{0,6\} |p=\frac{1}{2})\\
+\alpha = P(\theta_3=0|p=\frac{1}{2})+P(\theta_3=6|p=\frac{1}{2})
 $$
 Solve for each term using the binomial distribution formula
 
 $$
 binomial \space distribution \space formula \\
-P_x = nCx\space p^x(1-p)^{n-x}\\ \\
-solve \space for \space P(\theta=0|p=\frac{1}{2})\\
-P(X_i=0) + P(Y_i=0) = \frac{1}{4} \\
-P(\theta=0|p=\frac{1}{2}) = 0C3 \space p^0*(1-p)^3\\
-P(\theta=0|p=\frac{1}{2}) = (1) \space (.5)^0*(.5)^3
+P_x = nCx\space q^x(1-q)^{n-x}\\ \\
+\text{q was chosen to avoid confusion with p from the problem statement}
+$$
+$$
+solve \space for \space P(\theta_3=0|p=\frac{1}{2})\\
+\text{where q is P(X_i=0,Y_i=0)=1/4}\\
+\theta_3 = 0\text{ means that after 3 three trials, the test statistic has value of 0 (all 0's) }\\
 
+P(\theta_3=0|p=\frac{1}{2}) = 0C3 \space q^3*(1-q)^0\\
+P(\theta_3=0|p=\frac{1}{2}) = (1)(1/4)^3(1)\\
+P(\theta_3=0|p=\frac{1}{2})=(1/4)^3
 $$
+$$
+solve \space for \space P(\theta_3=6|p=\frac{1}{2})\\
+\text{where q is P(X_i=1,Y_i=1)=1/4}\\
+\theta_3 = 6\text{ means after all three trials, the test statistic has the value of 6 (all 1's)}\\
 
-result of a pair of flips both coming up tails is
-$$
-0 = X_i + Y_i \\
-P(trial = 0) = P(X_i=0) * P(Y_i=0) \\
-P(one \space trial = 0) = \frac{1}{2} * \frac{1}{2} = \frac{1}{4}
-\\
-P(\theta=0) = \frac{1}{4}^3
-
-$$
-$$
-2 = X_i + Y_i \\
-P(trial = 2) = P(X_i=1) * P(Y_i=1) \\
-P(one \space trial = 2) = \frac{1}{2} * \frac{1}{2} = \frac{1}{4}
-\\
-\theta = 3 \space trials \\
-P(\theta=6) = \frac{1}{4}^3
+P(\theta_3=6|p=\frac{1}{2}) = 3C3 \space q^3*(1-q)^0\\
+P(\theta_3=6|p=\frac{1}{2}) = (1)(1/4)^3(1)\\
+P(\theta_3=6|p=\frac{1}{2})=(1/4)^3
 $$
 now sub back in for alpha
 $$
-\alpha = P(\theta=0|H_o) + P(\theta=6|H_o) \\
+\alpha = P(\theta_3=0|H_o) + P(\theta_3=6|H_o) \\
 \alpha = \frac{1}{4}^3 + \frac{1}{4}^3 \\
 \alpha = \frac{2}{64} = \frac{1}{32}
 $$
+
+
+
 
 # 2. What is the power of your test for the alternate hypothesis that $p=3/4$?
 
@@ -96,23 +114,43 @@ $$Power = 1 - \beta $$
 Where $$\beta$$ is the type 2 error, or the false negative rate. Type 2 error occurs when we fail to reject the null hypothesis when we should.
 
 $$
+H_a: p=\frac{3}{4}, \space p=P(X_i = Y_i)\\
 Power = P(reject \space null|H_a) \\
-P(X_i=Y_i) = p = \frac{3}{4}
+P(X_i=Y_i) = p = \frac{3}{4}\\
+$$
+We assume that the likelihood for heads and tails remains the equal, but the likelihood of getting $$X_i = Y_i$$ changes to $$\frac{3}{4}$$. Therefore, 
+$$
+P(X_i=Y_i|H_a)=3/4 \\
+P(X_i=Y_i) = P(X_i=0,Y_i=0)+P(X_i=1,Y_i=1)\\
+P(X_i=0,Y_i=0)=P(X_i=1,Y_i=1)\\
+\therefore\\
+P(X_i=0,Y_i=0) = 3/8 \\
+P(X_i=1,Y_i=1) = 3/8 \\
+P(X_i=0,Y_i=1) = 1/8\\
+P(X_i=1,Y_i=0) = 1/8\\
+$$
+When fail to reject
+$$
+\theta_3 = X_1 + Y_1 + X_2 + Y_2+X_3+Y_3\\
+\text{reject Ho when } \theta_3 = 0 \space or \space  \theta_3 = 6\\
 
-\\
-\beta = P(fail \space to \space  reject \space H_o|H_a)
+Power = P(reject \space null|H_a)\\
+Power = P(\theta_3 \in \{0,6\}|p=\frac{3}{4})\\
+Power=P(\theta_3=0|p=3/4) + P(\theta_3=6|p=3/4)
+$$
+Now we solve for the two terms
+$$
+P(\theta_3=0|p=3/4) = 3C0 * (3/8)^3*(1-3/8)^0\\
+=(1)(3/8)^3(1)\\
+=\frac{27}{512}\\
+P(\theta_3=6|p=3/4) = 3C3 * (3/8)^3*(1-3/8)^0\\
+=(1)(3/8)^3(1)\\
+=\frac{27}{512}\\
+
+$$
+$$Power=P(\theta_3=0|p=3/4) + P(\theta_3=6|p=3/4)\\
+Power = (\frac{3}{8})^3+(\frac{3}{8})^3\\
+Power = 2*(\frac{3}{8})^3\\
+Power \approx 0.105
 $$
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-
-```{r}
-plot(cars)
-```
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
