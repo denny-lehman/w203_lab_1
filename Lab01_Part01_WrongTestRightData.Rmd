@@ -1,0 +1,10 @@
+---
+title: "Lab01_Part01_WrongTestRightData"
+author: 'DataSci 203 Team 3: Savita, Denny, Tymon'
+date: "10/18/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
