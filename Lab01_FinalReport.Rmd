@@ -10,6 +10,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 ```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(plyr)
 library(dplyr)
@@ -17,16 +18,16 @@ library(ggplot2)
 library(knitr)
 library(tidyverse) 
 library(haven)
+library(gridExtra)
 theme_set(theme_bw())
 options(tinytex.verbose = TRUE)
 ```
 
-```{r DATA Read , echo=FALSE, include=FALSE, warning=TRUE, message=TRUE}
-setwd("/home/rstudio/w203_lab_1/")
+```{r DATA Read, echo=FALSE, include=FALSE}
 anes_2020_full_data <- read_csv("anes_timeseries_2020_csv_20210719.csv")
 ```
 
-```{r DATA WRANGLING , echo=FALSE, include=FALSE, warning=TRUE, message=TRUE}
+```{r DATA WRANGLING, echo=FALSE, include=FALSE}
 anes_2020_subset <- anes_2020_full_data %>%
   select(Case_Id = V200001
          , Sample_Type = V200003
@@ -42,7 +43,7 @@ anes_2020_subset <- anes_2020_full_data %>%
 #anes_2020_subset
 ```
 
-```{r DATA WRANGLING/FILTERING , echo=FALSE, include=FALSE, warning=TRUE, message=TRUE}
+```{r DATA WRANGLING/FILTERING , echo=FALSE, include=FALSE}
 anes_2020_subset_filtered <- anes_2020_subset%>%
   select(Case_Id
          , Sample_Type
@@ -63,7 +64,7 @@ anes_2020_subset_filtered <- anes_2020_subset%>%
 #anes_2020_subset_filtered
 ```
 
-```{r final dataset , echo=FALSE}
+```{r final dataset, echo=FALSE, include=FALSE}
 ANES <- anes_2020_subset_filtered %>% 
   mutate(
     Political_Party = case_when(
@@ -90,50 +91,100 @@ Our data comes from the 2020 Time Series Study performed by the survey firm, Wes
 
 Additionally, all sample members who completed the post-election survey from the ANES 2016 Time Series Study were invited to participate in the 2020 survey online. This survey data was merged using the case ID variable to join the two datasets.
 
-In order to operationalize the concept of difficulty voting, we first identify the Democratic and Republican voters. Per guidance from political scientists\footnote{https://www.sciencedirect.com/journal/electoral-studies}, we group voters into political parties by the direction they "lean." In other words, a voter that indicates they "lean democratic" is classified as a Democrat and vice versa. Additionally, in order to operationalize the frequency in which Democrats had experienced difficulty voting compared to Republicans that experienced difficulty, we grouped voters in a binary fashion; as either had difficulty voting or had no difficulty at all. The tables below describe these distributions.
+In order to operationalize the concept of difficulty voting, we first identify the Democratic and Republican voters. Per guidance from an article written by political scientists\footnote{https://www.sciencedirect.com/journal/electoral-studies}, we group voters into political parties by the direction they "lean." In other words, a voter that indicates they "lean democratic" is classified as a Democrat and vice versa. The tables below describe these distributions.
 
 ### Insert Distribution Table Here
-```{r Table, echo=TRUE}
+```{r Table, echo=FALSE, results='asis'}
 tbl <- table(ANES$Political_Party)
 
-kable(
+tbl1 <- kable(
   addmargins(tbl),
   caption = 'Frequency Distribution of Political Party', 
-  booktabs = TRUE, 
+  booktabs = TRUE,
 )
+
+tbl2 <- kable(
+    prop.table(tbl),
+    caption = 'Distribution of Political Party', 
+    booktabs = TRUE, 
+)
+
+tbl1
+tbl2
+
 ```
 
-```{r Plotting , echo=True}
+Table 1 shows the frequencies of Democrats and Republicans in our dataset. And, Table 1 shows the proportion of each group, which is roughly 54% Democrat and 46% Republican.
 
-anes_2020_difficulty <- anes_2020_subset_final %>%
-  select_all()%>%
-  filter(Voting_Level_Difficulty_Code == 1)
-#anes_2020_difficulty  
-df = data.frame(anes_2020_difficulty)
+The key variable for our analyses is the question pertaining to how difficult it was for the respondent to vote. Responses were collected on a 5-point Likert scale that ranged from 1 ("Not difficult at all") to 5 ("Extremely difficult"). In order to operationalize the frequency in which Democrats had experienced difficulty voting compared to Republicans that experienced difficulty, we grouped voters in a binary fashion; as either had difficulty voting or had no difficulty at all and compared their means. 
 
-p<-ggplot(data=df, aes(x=Political_Party, y=Voting_Level_Difficulty_Code, fill=Political_Party))+   geom_bar(stat="identity")+
+```{r mean comparison, echo = FALSE, message=FALSE}
+ANES_mean <- ANES %>%
+  mutate(
+    Voting_Level_Difficulty_Code = case_when(
+      Voting_Level_Difficulty_Code > 1 ~ 1, 
+       Voting_Level_Difficulty_Code == 1 ~ 0,
+      )
+    )
+
+table_mean <- ANES_mean %>%
+  group_by(Political_Party) %>%
+  summarise_at(vars(Voting_Level_Difficulty_Code), list(Had_Difficulty_Voting_Mean = mean))
+
+plt1 <- ggplot(data=table_mean, aes(x=Political_Party, y=Had_Difficulty_Voting_Mean, fill=Political_Party))+   geom_bar(stat="identity")+
   scale_fill_manual(values=c("#1c2e4a", "#900d09"))+
   theme(legend.position = "none"
         , panel.grid.major = element_blank()
         , panel.grid.minor = element_blank()
         )
-p
 
 ```
 
-As you can see, the proportion of Democrats blah, blah blah
+```{r Voting Level Difficulty comparison, echo = FALSE, message=FALSE}
+ANES_levels <- ANES %>%
+  group_by(Political_Party) %>%
+  summarise_at(vars(Voting_Level_Difficulty_Code), list(Voting_Level_Difficulty_Code = mean))
 
+plt2 <- ggplot(data=ANES_levels, aes(x=Political_Party, y=Voting_Level_Difficulty_Code, fill=Political_Party))+   geom_bar(stat="identity")+
+  scale_fill_manual(values=c("#1c2e4a", "#900d09"))+
+  theme(legend.position = "none"
+        , panel.grid.major = element_blank()
+        , panel.grid.minor = element_blank()
+        )
+```
 
-
-```{r unpaired two sample t-test , echo=FALSE, include=FALSE, warning=TRUE, message=TRUE}
-
-#t.test(anes_2020_subset_final$Voting_Level_Difficulty_Code ~ anes_2020_subset_final$Political_Party)
+```{r plot on same line, echo = FALSE, message=FALSE}
+grid.arrange(plt1, plt2, ncol=2)
 
 ```
 
+First, let's determine if one party is more likely to experience difficulty voting than the other. To test this, we can use a two-sample t-test. The null hypothesis for this t-test can be expressed as follows:
+
+\begin{quote}
+
+\textbf{Null Hypothesis:} \textit{The probability that a Democratic voter experiences some difficulty during their voting process is equal to the probability that a Repoblican voter experiences some difficulty during their voting process.}
+
+\end{quote}
+
+For this t-test, the following assumptions must be true:
+
+\begin{enumerate}
+  \item \textbf{i.i.d. data}  First, data must be generated via an iid process (Independent and Identically Distributed). The ANES 2020 survey merged in data from a panel, which was comprised of participants in the ANES 2016 survey. This is definitely a concern when validating that the data to be identically distributed, since the year in which these surveys were administered differs greatly. However, for the purposes of this study, we will assume the impact of this possible violation is negligible. 
+
+  \item \textbf{Metric scale}  Even though our raw data includes ordinal variables, we have transformed them to binary form.  A binary variable qualifies as metric as there is only a single interval, which goes from zero to 1.
+  
+  \item \textbf{Sufficient normality} The small number of new voters can be understood as a positive skew in our turnout variable (skewness = `r round(skewness(anes$new_voter),2)`).  Nevertheless, the large sample size suggests that the sampling distribution of the statistic should be approximately normal via the Central Limit Theorem. 
+\end{enumerate}
 # Results
+```{r unpaired two sample t-test , echo=TRUE, results='hide'}
 
-```{r prep for test , echo=FALSE, include=FALSE, warning=TRUE, message=TRUE}
+t.test(ANES_mean$Voting_Level_Difficulty_Code ~ ANES_mean$Political_Party)
+
+```
+
+
+
+```{r prep for test , echo=FALSE, include=FALSE}
 anes_2020_subset_final_wilcox <- anes_2020_subset_filtered %>% 
   mutate(
     Political_Party = case_when(
@@ -143,15 +194,12 @@ anes_2020_subset_final_wilcox <- anes_2020_subset_filtered %>%
     )
 ```
 
-```{r Wicoxon rank-sum test, echo=TRUE} 
-test <- wilcox.test(anes_2020_subset_final_wilcox$Voting_Level_Difficulty_Code ~ anes_2020_subset_final_wilcox$Political_Party)
-#H_0 P( difficulty of D < difficulty of R) = P( difficulty of D >= difficulty of R)
-
+```{r Wicoxon rank-sum test, echo=TRUE, results='hide'} 
+test <- wilcox.test(ANES$Voting_Level_Difficulty_Code ~ ANES$Political_Party)
 ```
 
 The results of the Wicoxon Rank-Sum test conclude that the probability of the level of difficulty voting for Democrats is less the the level of difficulty voting for Republicans IS NOT equal to the probability of the level of difficulty voting for Democrats is greater than the the level of difficulty voting for Republicans (W = 4058825, p-value = 0.005804). In practical terms, this means there was a statistically significant difference in the experienced level of difficulty voting between the two political parties. 
 
-```{r run test, echo=FALSE}
+```{r run test, echo=FALSE, results='hide'}
 test
-
 ```
