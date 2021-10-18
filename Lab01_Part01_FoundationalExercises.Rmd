@@ -11,10 +11,15 @@ chunk_output_type: Inline
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r installing wine data from github, echo=FALSE, include=FALSE}
+devtools::install_github("JustinMShea/wooldridge")
+```
+
 ```{r import packages, echo=FALSE, include=FALSE}
 library(dplyr)
 library(knitr)
-library(tidyverse) 
+library(tidyverse)
+library(wooldridge)
 ```
 
 # Professional Magic
@@ -121,32 +126,48 @@ You would like to know whether people in countries with high GDP per capita (hig
 WHRdata <- read_csv("datasets/happiness_WHR.csv")
 ```
 
-```{r inspect data, echo=FALSE}
+```{r inspect data, echo=FALSE, include=FALSE}
 WHRdata
 ```
 
-```{r}
+```{r Data wrangling and test setup, echo=FALSE, include=FALSE}
 WHRmean <- mean(WHRdata$`Log GDP per capita`, na.rm = TRUE)
 
 WHR <- WHRdata %>%
   mutate(
-    
+    'High_Low_GDP' = case_when(
+      `Log GDP per capita` < WHRmean ~ 'Low', 
+       `Log GDP per capita` > WHRmean ~ 'High',
+    )
   )
 
-WHRmean
+WHRsubset <- WHR %>%
+  select(High_Low_GDP
+         , `Life Ladder`
+         ) %>%
+  filter(High_Low_GDP %in% c('High', 'Low'))
+
+count_high <- count(filter(WHRsubset, High_Low_GDP == "High"))
+count_low <- count(filter(WHRsubset, High_Low_GDP == "Low"))
+count_high
+count_low
+
 ```
-```{r}
-summary(WHR$`Log GDP per capita`)
-```
+##### Two-sample t-test assumptions
+1. Metric variables  
+The Life Ladder variable is a metric variable. We can justify this by reviewing the FAQ for this dataset that states, "... it asks respondents to think of a ladder, with the best possible life for them being a 10, and the worst possible life being a 0. They are then asked to rate their own current lives on that 0 to 10 scale." From this description, we know the responses fall on a 0 to 10 scale, where the distances or gaps between each point on the scale are the same, since each rung on a ladder is the same distance for the next.
 
-two-sample t-test assumptions
-1. Metric variables
-2. IID
-3. Data is normally distributed (check sample size)
+2. IID  
+Here, we assume IID is upheld since Gallup\footnote{https://www.gallup.com/corporate/212381/who-we-are.aspx} is a reputable research firm, and we expect their sampling and data collection processes maintain the independence and identically distributed assumption.
+
+3. Data is normally distributed (check sample size)  
+Since we have sufficient sample sizes (greater than 30) in each of the Low (n=105) and High (n=121) groups for GDP, we can assume normality by the Central Limit Theorem.
+
+Thus, all the assumptions for a two-sample t-test are valid and the test would be appropriate. 
 
 
-## Study question 3: Legislator age
-#### You would like to test whether Democratic or Republican senators are older. List all assumptions for a Wilcoxon rank-sum test and evaluate them.
+# Legislator age
+You would like to test whether Democratic or Republican senators are older. List all assumptions for a Wilcoxon rank-sum test and evaluate them.
 
 ## Hypothesis
 #### H0: Median age of Democrat is same as mean age of Republican senators.
@@ -235,5 +256,75 @@ wilcox.test(legislator_DemRep_Age_data$AgeInYears~legislator_DemRep_Age_data$par
 
 #### With 95% confidence interval, We are rejecting the null hypothesis
 
+# It's for your health!
+You would like to use it [wine dataset] to test whether countries have more deaths from heart disease or from liver disease. List all assumptions for a signed-rank test and evaluate them.
+
+```{r load wine dataset from wooldrigde, echo=FALSE}
+data("wine")
+wine
+```
+
+##### Wilcoxon signed-rank test assumptions
+1. Metric variables
+We need metric variables for a paired Wilcoxon signed-rank test, and the heart and liver variables satisfy this assumption. The Heart and Liver variables represent the number of deaths from heart and liver disease in each country. 
+
+2. IID  
+There are some concerns with IID for this data. Since there dataset only contains 21 countries, we do not know how these countries were drawn, particularly if they were randomly select. Furthermore, we do not know how the data was collected, which means the data draw could not have been identically distributed.
+
+3. Difference is symmetric
+The last assumption requires the difference between pairs follows a symmetric distribution. If you look at the histogram below of the difference between heart and liver disease deaths, one could argue that the distribution is skewed left, which violates our difference is symmetric assumption.
+
+Due to major concerns with assumptions 2 and 3, the Wilcoxon signed-rank test would not be a valid test to perform to answer the question. 
+
+```{r transfrom wine data and plot hist, echo=FALSE, include=TRUE, fig.width=4, fig.height=3}
+wine_transform <- wine %>%
+  mutate(heart_liver = heart - liver)
+
+hist(wine_transform$heart_liver, breaks = 15)
+```
 
 
+# Positive vibes
+You would like to test whether the US population feels more positive towards Protestants or towards Catholics. List all assumption for a paired t-test and evaluate them.
+
+```{r read data, echo=FALSE, message=FALSE, error=FALSE}
+GSSdata <- read_csv("datasets/GSS_religion.csv")
+
+head(GSSdata)
+```
+
+```{r Data setup, echo=FALSE, include=FALSE}
+# WHRmean <- mean(WHRdata$`Log GDP per capita`, na.rm = TRUE)
+# 
+# WHR <- WHRdata %>%
+#   mutate(
+#     'High_Low_GDP' = case_when(
+#       `Log GDP per capita` < WHRmean ~ 'Low', 
+#        `Log GDP per capita` > WHRmean ~ 'High',
+#     )
+#   )
+# 
+# WHRsubset <- WHR %>%
+#   select(High_Low_GDP
+#          , `Life Ladder`
+#          ) %>%
+#   filter(High_Low_GDP %in% c('High', 'Low'))
+# 
+# count_high <- count(filter(WHRsubset, High_Low_GDP == "High"))
+# count_low <- count(filter(WHRsubset, High_Low_GDP == "Low"))
+# count_high
+# count_low
+
+```
+
+##### Paired two-sample t-test assumptions
+1. Metric variables  
+The Life Ladder variable is a metric variable. We can justify this by reviewing the FAQ for this dataset that states, "... it asks respondents to think of a ladder, with the best possible life for them being a 10, and the worst possible life being a 0. They are then asked to rate their own current lives on that 0 to 10 scale." From this description, we know the responses fall on a 0 to 10 scale, where the distances or gaps between each point on the scale are the same, since each rung on a ladder is the same distance for the next.
+
+2. IID  
+Here, we assume IID is upheld since Gallup\footnote{https://www.gallup.com/corporate/212381/who-we-are.aspx} is a reputable research firm, and we expect their sampling and data collection processes maintain the independence and identically distributed assumption.
+
+3. Data is normally distributed (check sample size)  
+Since we have sufficient sample sizes (greater than 30) in each of the Low (n=105) and High (n=121) groups for GDP, we can assume normality by the Central Limit Theorem.
+
+Thus, all the assumptions for a two-sample t-test are valid and the test would be appropriate. 
