@@ -107,12 +107,11 @@ c
 $$Power = 1 - \beta $$
 Where $$\beta$$ is the type 2 error, or the false negative rate. Type 2 error occurs when we fail to reject the null hypothesis when we should.
 
-$$
-Power = P(reject \space null|H_a) \\
-P(X_i=Y_i) = p = \frac{3}{4}
-\\
+$$Power = P(reject \space null|H_a) \\
+P(X_i=Y_i) = p = \frac{3}{4}\\
 \beta = P(fail \space to \space  reject \space H_o|H_a)
 $$
+
 ## Wrong Test, Right Data
 ### $Our$ $Analysis:$
 
@@ -191,7 +190,7 @@ $Disadvantage:$ Since these tests do not use the metric information they loose s
   3. Works on Un-Paired Data
 
 ```{r DATA Read, echo=FALSE, include=FALSE}
-setwd("C:\\Users\\savit\\lab_1\\datasets")
+setwd("datasets")
 legislator_full_data <- read_csv("legislators-current.csv")
 ```
 ##  Data and Methodology
