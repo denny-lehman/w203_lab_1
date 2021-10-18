@@ -1,0 +1,118 @@
+---
+title: "Lab 1 Part 1: Applied Practice, Problem 1 Professional Magic"
+author: 'Team03: Savita Chari, Denny Lehman, Tymon Silva'
+date: "10/16/2021"
+output:
+  bookdown::pdf_document2: 
+    toc: false
+---
+
+# Part 1: Foundational Exercises
+## Profesional Magic 
+
+Your aunt (who is a professional magician), claims to have created a pair of magical coins that share a  connection to each other that makes them land in the same way.  The coins are always flipped at the same time.  For a given flip $i \in \{1,2,3...\}$, let $X_i$ be a Bernoulli random variable representing the outcome of the first coin, and let $Y_i$ be a Bernoulli random variable representing the outcome of the second coin.  You assume that each flip of the pair is independent of all other flips of the pair.  You also assume that
+
+$$P(X_i=0)= P(X_i = 1) = P(Y_i=0) = P(Y_i = 1) = 1/2,$$
+and write,
+
+$$P(X_i = Y_i) = p.$$
+
+Your aunt claims that $p > 1/2$.
+
+You design a test to evaluate your aunt's claim.  You flip the coins 3 times and define your test statistic to be the sum $X_1 + Y_1 + X_2 + Y_2 + X_3 + Y_3$
+
+Your null hypothesis is that $p=1/2$.  You plan to reject the null if your test statistic is 0 or 6.
+
+
+1. What is the type 1 error rate of your test?
+2. What is the power of your test for the alternate hypothesis that $p=3/4$?
+
+# 1. What is the type 1 error rate of the test?
+
+The type 1 error occurs when we reject the null hypothesis when it is actually true. Type I error, a false positive, is typically denoted as alpha
+
+$$\alpha = P(reject \space Ho|Ho)$$
+We are given that Ho is when p = 1/2. p is the probability that Xi = Yi
+
+$$ H_o: p=\frac{1}{2}, \space p=P(X_i = Y_i)$$
+We know that each flip of the pair has the following potential outcomes:
+$$
+P(X_i=Y_i) = P(X=0,Y=0) + P(X=1,Y=1)\\
+P(X_i=Y_i|H_o) = 0.5 = P(X=0,Y=0) + P(X=1,Y=1)\\
+P(X=0,Y=0)=\frac{1}{4}\\
+P(X=1,Y=1)=\frac{1}{4}
+$$
+We are also given that our test statistic, theta_hat, will be equal to 
+
+$$
+\theta =X_1 +Y_1+X_2+Y_2+X_3+Y_3
+$$
+
+From the problem definition, we reject the null when our test statistic theta is 0 or 6 after 3 flips of pairs of coins. Type I error is thus
+$$
+\alpha = P(reject \space Ho|Ho)\\
+\alpha = P(\theta \in \set_{0,6} |p=\frac{1}{2})\\
+\alpha = P(\theta=0|p=\frac{1}{2})+P(\theta=6|p=\frac{1}{2})
+$$
+Solve for each term using the binomial distribution formula
+
+$$
+binomial \space distribution \space formula \\
+P_x = nCx\space p^x(1-p)^{n-x}\\ \\
+solve \space for \space P(\theta=0|p=\frac{1}{2})\\
+P(X_i=0) + P(Y_i=0) = \frac{1}{4} \\
+P(\theta=0|p=\frac{1}{2}) = 0C3 \space p^0*(1-p)^3\\
+P(\theta=0|p=\frac{1}{2}) = (1) \space (.5)^0*(.5)^3
+
+$$
+
+result of a pair of flips both coming up tails is
+$$
+0 = X_i + Y_i \\
+P(trial = 0) = P(X_i=0) * P(Y_i=0) \\
+P(one \space trial = 0) = \frac{1}{2} * \frac{1}{2} = \frac{1}{4}
+\\
+P(\theta=0) = \frac{1}{4}^3
+
+$$
+$$
+2 = X_i + Y_i \\
+P(trial = 2) = P(X_i=1) * P(Y_i=1) \\
+P(one \space trial = 2) = \frac{1}{2} * \frac{1}{2} = \frac{1}{4}
+\\
+\theta = 3 \space trials \\
+P(\theta=6) = \frac{1}{4}^3
+$$
+now sub back in for alpha
+$$
+\alpha = P(\theta=0|H_o) + P(\theta=6|H_o) \\
+\alpha = \frac{1}{4}^3 + \frac{1}{4}^3 \\
+\alpha = \frac{2}{64} = \frac{1}{32}
+$$
+
+# 2. What is the power of your test for the alternate hypothesis that $p=3/4$?
+
+$$Power = 1 - \beta $$
+Where $$\beta$$ is the type 2 error, or the false negative rate. Type 2 error occurs when we fail to reject the null hypothesis when we should.
+
+$$
+Power = P(reject \space null|H_a) \\
+P(X_i=Y_i) = p = \frac{3}{4}
+
+\\
+\beta = P(fail \space to \space  reject \space H_o|H_a)
+$$
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
