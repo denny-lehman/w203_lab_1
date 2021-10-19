@@ -145,12 +145,10 @@ $$Power = (\frac{3}{8})^3+(\frac{3}{8})^3$$
 $$Power = 2*(\frac{3}{8})^3$$
 $$Power \approx 0.105$$
 
-
 ## Wrong Test, Right Data
 ### $Our$ $Analysis:$
 
-The response categories in Likert scales creates rank order/ordinal data, but the intervals between their values cannot be compared or presumed equal. Therefore, standard statistical analysis such as  the mean, standard deviation etc. are inappropriate for ordinal data. Hence, this data is not suitable for a paired t-test. Paired t-test is parametric which means it expects a normal distribution of metric scaled data in its test population. It may be used for ordinal data such as True/False but for our use case a non-parametric test such as  Wilcoxon signed-rank test or Sign test would be a better  choice.   
-
+The response categories in Likert scales creates rank order/ordinal data, but the intervals between their values cannot be compared or presumed equal. Therefore, standard statistical analysis such as the mean (central tendency), standard deviation, etc. are meaningless and inappropriate with ordinal data. Hence, this data is not suitable for a paired t-test. The output of this test would be the difference in means from the likability of the mobile website vs the regular website. While it is possible to draw conclusions in the directionality of the result of a paired t-test on this data, we cannot interpret the magnitude of the outcome because we are using ordinal data and taking the difference of their means is meaningless. In conclusion, the paired t-test could answer which version of the website is more likable, but not by how much.
 
 # Test Assumptions
 For the four following questions, your task is to evaluate the assumptions for the given test using your background knowledge and examining the data.
