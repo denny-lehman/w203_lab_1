@@ -84,7 +84,7 @@ summary_table
 
 Table 1 shows the frequencies of Democrats and Republicans in our dataset and the proportion of each group, which is roughly 54% Democrat and 46% Republican.
 
-The key variable for our analysis is the question pertaining to how difficult it was for the respondent to vote. Responses were collected on a 5-point Likert scale that ranged from 1 ("Not difficult at all") to 5 ("Extremely difficult"). In order to operationalize the frequency in which Democrats had experienced difficulty voting compared to Republicans that experienced difficulty, we grouped voters in a binary fashion; as either "had difficulty voting" or "had no difficulty at all" and compared their means. The bar graph on the left in Figure 1 illustrates how one would make that mapping. Any respondent that rated their difficulty a "1" would be grouped as not having experienced any difficulty at all in the voting process. All reported ratings at a "2" or above would be assigned to the group that did experience difficulty voting. The bar graph on the right-hand-side in Figure 1 shows the result of that mapping with the counts in each of the groups. As you can calculate from the frequencies, just over 12% of democrats reported facing difficulty voting compared to 9.6$ reported by republicans.  
+The key variable for our analysis is the question pertaining to how difficult it was for the respondent to vote. Responses were collected on a 5-point Likert scale that ranged from 1 ("Not difficult at all") to 5 ("Extremely difficult"). In order to operationalize the frequency in which Democrats had experienced difficulty voting compared to Republicans that experienced difficulty, we grouped voters in a binary fashion; as either "had difficulty voting" or "had no difficulty at all" and compared their means. The bar graph on the left in Figure 1 illustrates how one would make that mapping. Any respondent that rated their difficulty a "1" would be grouped as not having experienced any difficulty at all in the voting process. All reported ratings at a "2" or above would be assigned to the group that did experience difficulty voting. The bar graph on the right-hand-side in Figure 1 shows the result of that mapping with the counts in each of the groups. As you can calculate from the frequencies, just over 12% of Democrats reported facing difficulty voting compared to 9.6% reported by Republicans.  
 
 ```{r mean comparison, echo = FALSE, message=FALSE}
 ANES_mean <- ANES %>%
@@ -97,9 +97,9 @@ ANES_mean <- ANES %>%
 ``` 
 
 ```{r Stacked Bar to show Yes/No Difficulty, echo = FALSE, message=FALSE}
-
+# scale_fill_manual(values=c("#D3D3D3", "#900d09"))
 plt1 <- ggplot(data = ANES_mean, aes( y = Political_Party, fill =  factor(Voting_Level_Difficulty_Code) ))  +  
-    geom_bar() + coord_flip() + scale_fill_manual(values=c("#D3D3D3", "#900d09"))+ labs(title = "Partywise Who Faced Difficulty", x = "Number of Voters", y = "Political Party",fill="Level of Difficulty") + geom_text(stat='count',aes(label=..count..),vjust=-0.7)+labs( fill = "Faced Difficulty?") +scale_fill_manual(values=c("#B0C4DE", "#900d09"), labels = c("No", "Yes"))
+    geom_bar() + coord_flip() + scale_fill_manual(values=c("#D3D3D3", "#900d09")) + labs(title = "Partywise Who Faced Difficulty", x = "Number of Voters", y = "Political Party",fill="Level of Difficulty") + geom_text(stat='count',aes(label=..count..),vjust=-0.7)+labs( fill = "Faced Difficulty?") +scale_fill_brewer(palette = 17, labels = c("No", "Yes"))
 ```
 
 
@@ -110,7 +110,7 @@ plt2 <- ggplot(data = ANES, aes( y = Political_Party, fill =  factor(Voting_Leve
 
 ```
 
-```{r plot on same line, echo = FALSE, message=FALSE, fig.height= 4, fig.width=8, fig.cap=' Bar graphs of voter difficulty by political party'}
+```{r echo = FALSE, message=FALSE, fig.height= 4, fig.width=8, fig.cap='Voter difficulty by political party (left) and operationalized difficulty for this study (right)'}
 grid.arrange(plt2, plt1, ncol=2)
 ```
 
