@@ -48,7 +48,8 @@ Our data comes from the 2020 Time Series Study performed by the survey firm, Wes
 Additionally, all sample members who completed the post-election survey from the ANES 2016 Time Series Study were invited to participate in the 2020 survey online. This survey data was merged using the case ID variable to join the two datasets.
 
 In order to operationalize the concept of difficulty voting, we first identify the Democratic and Republican voters. Per guidance from an article written by political scientists\footnote{https://www.sciencedirect.com/journal/electoral-studies}, we group voters into political parties by the direction they "lean." In other words, a voter that indicates they "lean democratic" is classified as a Democrat and vice versa. The tables below describe these distributions.
-## Add concern with sample universe for difficulty question
+
+Data pipline: we created a data pipeline to process this large amount of data. It is a one-time process for every election year. The process data is consumed by this data anlysis.
 
 ```{r Table, echo=FALSE}
 tbl <- table(ANES$Political_Party)
