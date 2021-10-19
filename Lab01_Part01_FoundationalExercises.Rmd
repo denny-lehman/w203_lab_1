@@ -190,7 +190,9 @@ Independent. It is a nonparametric test for unpaired data. It is used to compare
 ```{r DATA Read , echo=FALSE}
 
 legislator_full_data <- read_csv("datasets/legislators-current.csv")
+
 ```
+
 ## Data Cleaning
 The Data set has 538 rows and 34 columns. But we need a Subset of this data  to answer the research question
 ```{r Get the shape of the data in terms of number of rows and column}
@@ -287,39 +289,20 @@ hist(wine_transform$heart_liver, breaks = 15)
 # Positive vibes
 You would like to test whether the US population feels more positive towards Protestants or towards Catholics. List all assumption for a paired t-test and evaluate them.
 
-```{r read data, echo=FALSE, message=FALSE, error=FALSE}
-GSSdata <- read_csv("datasets/GSS_religion.csv")
+```{r read data, echo=FALSE, include=FALSE, message=FALSE, error=FALSE}
+GSS <- read_csv("datasets/GSS_religion.csv")
 
-head(GSSdata)
+GSS
 ```
 
-```{r Data setup, echo=FALSE, include=FALSE}
-# WHRmean <- mean(WHRdata$`Log GDP per capita`, na.rm = TRUE)
-# 
-# WHR <- WHRdata %>%
-#   mutate(
-#     'High_Low_GDP' = case_when(
-#       `Log GDP per capita` < WHRmean ~ 'Low', 
-#        `Log GDP per capita` > WHRmean ~ 'High',
-#     )
-#   )
-# 
-# WHRsubset <- WHR %>%
-#   select(High_Low_GDP
-#          , `Life Ladder`
-#          ) %>%
-#   filter(High_Low_GDP %in% c('High', 'Low'))
-# 
-# count_high <- count(filter(WHRsubset, High_Low_GDP == "High"))
-# count_low <- count(filter(WHRsubset, High_Low_GDP == "Low"))
-# count_high
-# count_low
-
+```{r Data setup, echo=FALSE}
+# describe(GSS)
+str(GSS)
 ```
 
 ##### Paired two-sample t-test assumptions
 1. Metric variables  
-The Life Ladder variable is a metric variable. We can justify this by reviewing the FAQ for this dataset that states, "... it asks respondents to think of a ladder, with the best possible life for them being a 10, and the worst possible life being a 0. They are then asked to rate their own current lives on that 0 to 10 scale." From this description, we know the responses fall on a 0 to 10 scale, where the distances or gaps between each point on the scale are the same, since each rung on a ladder is the same distance for the next.
+The protemp and cathtemp variables . We can justify this by reviewing the FAQ for this dataset that states, "... it asks respondents to think of a ladder, with the best possible life for them being a 10, and the worst possible life being a 0. They are then asked to rate their own current lives on that 0 to 10 scale." From this description, we know the responses fall on a 0 to 10 scale, where the distances or gaps between each point on the scale are the same, since each rung on a ladder is the same distance for the next.
 
 2. IID  
 Here, we assume IID is upheld since Gallup\footnote{https://www.gallup.com/corporate/212381/who-we-are.aspx} is a reputable research firm, and we expect their sampling and data collection processes maintain the independence and identically distributed assumption.
