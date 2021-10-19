@@ -251,22 +251,16 @@ $Disadvantage:$ Since these tests do not use the metric information they loose s
   3. The Data is Ordinal Variable
 
 ```{r DATA Read, echo=FALSE, include=FALSE}
+setwd("C:\\Users\\savit\\lab_1\\datasets")
 legislator_full_data <- read_csv("legislators-current.csv", )
 ```
 ##  Data and Methodology
 
 
-The Data set has 538 rows and 34 columns. But we need a Subset of this data  to answer the research question
-```{r Get the shape of the data in terms of number of rows and column, echo=FALSE, include=FALSE}
-Num_Of_Rows <- nrow(legislator_full_data)
-Num_Of_Columns <- ncol(legislator_full_data)
-sprintf('The Dataset had %i Rows and %i Columns', Num_Of_Rows ,Num_Of_Columns)
-```
-
 ### In order to perform Wilcoxon test we need 2 types of columns from our dataset
 1. $[X]$ A categorical column with 2 distinct groups : We chose the 'party' column for this requirement but the data set includes more than two categories. We filtered only the Republican and Democrat data in order to perform Wilcoxon rank-sum test as we are interested in only those categories. Thus we fulfill the requirement of having only 2 categories.
 
-2. $[Y]$ A statistical column with numeric outcome: We chose the 'birthday' field for this requirement. Though this field is of class 'Date', with some manipulation we can make it a numeric outcome
+2. $[Y]$ A statistical column with numeric outcome: We chose the 'birthday' field for this requirement. Though this field is of class 'Date', with some manipulation we can make it a metric outcome
 
 ```{r Data Cleaning, echo=FALSE, include=FALSE}
 legislator_subset_data <- legislator_full_data %>%
@@ -275,7 +269,7 @@ legislator_subset_data <- legislator_full_data %>%
 
 ```
 
-```{r Get the shape of the data in terms of number of rows and column, echo=FALSE, include=FALSE}
+```{r Get the shape of the data in terms of number of rows and column, echo=FALSE, include=TRUE}
 Num_Of_Rows <- nrow(legislator_subset_data)
 Num_Of_Columns <- ncol(legislator_subset_data)
 sprintf('The Dataset had %i Rows and %i Columns', Num_Of_Rows ,Num_Of_Columns)
@@ -293,8 +287,9 @@ legislator_DemRep_Age_data[1:3,]
 ### Exploring Assumption 1 : Are the data sets independent?
 Well, yes, a Senator cannot belong to 2 parties simultaneously, so the data is independent. As mentioned in the introduction section, the source of the data is the congress-legislators project. Data such as information (first, last, etc.), biographical information (birthday, gender) of every members of the United States Congress (1789-Present) is maintained. Data of one Senator does not depend on the other. So we can safely assume the data is independent. In this test we are using the entire population of data available to us.
 
-### Exploring Assumption 2 : Is the population IID?
-From the graph below we can tell that the age distribution between republicans and democrats is some what normal, and not too skewed.  Moreover, as per Central Limit Theorem (CMT), when we have a sufficiently large sample size (98 in our case), the sampling distribution starts to approximate a normal distribution .
+### Exploring Assumption 2 : Is the population IID/Ordinal?
+From the graph below we can tell that the age distribution between republicans and democrats is some what normal, and not too skewed. The data is IID.  Moreover, as per Central Limit Theorem (CMT), when we have a sufficiently large sample size (98 in our case), the sampling distribution starts to approximate a normal distribution.
+
 
 ### $Given$ $this$ $information,$ $Wilcoxon$ $rank-sum$ $tes$t $is$ $not$ $a$ $good$ $choic$e $for$ $this$ $use$ $case$
 
@@ -378,12 +373,12 @@ The last assumption requires the difference between pairs follows a symmetric di
 
 Due to major concerns with assumptions 2 and 3, the Wilcoxon signed-rank test would not be a valid test to perform to answer the question. 
 
-```{r transfrom wine data and plot hist, echo=FALSE, include=TRUE, fig.width=4, fig.height=3}
+```{r transfrom wine data and plot hist, echo=FALSE, include=TRUE, fig.width=4, fig.height=3, col='green3'}
 wine_transform <- wine %>%
   mutate(heart_liver = heart - liver)
 
 hist(wine_transform$heart_liver, main="Histogram of Differeneces", 
-     xlab="Heart Disease - Liver Disease", breaks = 15)
+     xlab="Heart Disease - Liver Disease", breaks = 15, col='red4')
 ```
 
 
@@ -401,7 +396,7 @@ GSS_transform <- GSS %>%
   mutate(Prot_Cath_diff = prottemp-cathtemp)
 
 hist(GSS_transform$Prot_Cath_diff, main="Histogram of Differeneces",
-     xlab="Protestant Temp - Catholic Temp", breaks = 20)
+     xlab="Protestant Temp - Catholic Temp", breaks = 20, col='green4')
 ```
 ```
 
