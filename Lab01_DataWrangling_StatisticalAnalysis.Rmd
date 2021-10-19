@@ -1,0 +1,86 @@
+---
+title: "Data Wrangling For 'Difficulty Voting in the 2020 Presidential Election'"
+author: 'Team03: Savita Chari, Denny Lehman, Tymon Silva'
+date: "10/16/2021"
+output:
+  bookdown::pdf_document2: 
+    toc: false
+---
+# Data Wrangling
+
+The ANES project has been going since 1948 and it will continue for many years in the future. Which means our data analysis will continue to statistically analyze this data. The data cleanup and wrangling is the most time consuming part of any statistical analysis test that uses such a large amount of data. We do not want to repeat this expensive process every time we run the test. We want to generate a smaller, clean and processed data ready to be consumed by the analysis process. This file will create a functionality that will generate a repeatable  clean and usable data pipeline  for our data analysis year after year.
+
+ 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2) 
+library(knitr)
+options(tinytex.verbose = TRUE)
+```
+
+Load the entire dataset
+```{r DATA Read, echo=FALSE, include=FALSE}
+anes_2020_full_data <- read_csv("anes_timeseries_2020_csv_20210719.csv")
+#head(anes_2020_full_data)
+```
+
+Select the column needed for our statistical test
+```{r DATA WRANGLING, echo=FALSE, include=FALSE}
+anes_2020_subset <- anes_2020_full_data %>%
+  select(Case_Id = V200001
+         , Sample_Type = V200003
+         , Eligibility_Concerns = V200005
+         , Eligibility_Outcome = V200006
+         , Validation_Study_Outcome = V200008
+         , Did_Vote = V202066
+         , Political_Party = V201231x
+         , Voting_Level_Difficulty_Code = V202119
+         )%>%
+  filter()
+
+#head(anes_2020_subset)
+```
+
+Filter the rows that satisfy our testing criterion
+```{r DATA WRANGLING/FILTERING , echo=FALSE, include=FALSE}
+anes_2020_subset_filtered <- anes_2020_subset%>%
+  select(Case_Id
+         , Sample_Type
+         , Eligibility_Concerns
+         , Eligibility_Outcome
+         , Validation_Study_Outcome
+         , Did_Vote
+         , Political_Party
+         , Voting_Level_Difficulty_Code
+         )%>%
+  filter(Voting_Level_Difficulty_Code > 0 
+         & Eligibility_Concerns != 3
+         & Validation_Study_Outcome != 6
+         & Political_Party > 0
+         & Political_Party != 4
+         )
+
+#head(anes_2020_subset_filtered)
+```
+
+mutate the data to place the voters in the party of their leaning
+```{r final dataset, echo=FALSE}
+ANES <- anes_2020_subset_filtered %>% 
+  mutate(
+    Political_Party = case_when(
+      Political_Party %in% c(1, 2, 3) ~ 'Democrat', 
+       Political_Party %in% c(5, 6, 7) ~ 'Republican',
+      )
+    )
+#head(ANES)
+```
+
+
+```{r Write dataset to a csv, echo=FALSE}
+write.csv(ANES, "anes.csv",  row.names = FALSE)
+```
