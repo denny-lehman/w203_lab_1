@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r, include=FALSE}
 install.packages("kableExtra")
 ```
 
@@ -56,15 +56,6 @@ Additionally, all sample members who completed the post-election survey from the
 
 In order to operationalize the concept of difficulty voting, we first identify the Democratic and Republican voters. Per guidance from an article written by political scientists\footnote{https://www.sciencedirect.com/journal/electoral-studies}, we group voters into political parties by the direction they "lean." In other words, a voter that indicates they "lean democratic" is classified as a Democrat and vice versa. The table below describe these distributions.
 
-
-
-Table 1 shows the frequencies of Democrats and Republicans in our dataset and the proportion of each group, which is roughly 54% Democrat and 46% Republican.
-
-The key variable for our analysis is the question pertaining to how difficult it was for the respondent to vote. Responses were collected on a 5-point Likert scale that ranged from 1 ("Not difficult at all") to 5 ("Extremely difficult"). In order to operationalize the frequency in which Democrats had experienced difficulty voting compared to Republicans that experienced difficulty, we grouped voters in a binary fashion; as either "had difficulty voting" or "had no difficulty at all" and compared their means. 
-
-
-
-
 ```{r Table, echo=FALSE}
 tbl <- table(ANES$Political_Party)
 tbl_p <- prop.table(tbl)
@@ -91,46 +82,36 @@ summary_table
 
 ```
 
+Table 1 shows the frequencies of Democrats and Republicans in our dataset and the proportion of each group, which is roughly 54% Democrat and 46% Republican.
 
+The key variable for our analysis is the question pertaining to how difficult it was for the respondent to vote. Responses were collected on a 5-point Likert scale that ranged from 1 ("Not difficult at all") to 5 ("Extremely difficult"). In order to operationalize the frequency in which Democrats had experienced difficulty voting compared to Republicans that experienced difficulty, we grouped voters in a binary fashion; as either "had difficulty voting" or "had no difficulty at all" and compared their means. The bar graph on the left in Figure 1 illustrates how one would make that mapping. Any respondent that rated their difficulty a "1" would be grouped as not having experienced any difficulty at all in the voting process. All reported ratings at a "2" or above would be assigned to the group that did experience difficulty voting. The bar graph on the right-hand-side in Figure 1 shows the result of that mapping with the counts in each of the groups. As you can calculate from the frequencies, just over 12% of democrats reported facing difficulty voting compared to 9.6$ reported by republicans.  
 
 ```{r mean comparison, echo = FALSE, message=FALSE}
 ANES_mean <- ANES %>%
   mutate(
     Voting_Level_Difficulty_Code = case_when(
-      Voting_Level_Difficulty_Code > 1 ~ 1, 
-       Voting_Level_Difficulty_Code == 1 ~ 0,
+      Voting_Level_Difficulty_Code > 1 ~ 1,
+      Voting_Level_Difficulty_Code == 1 ~ 0,
       )
     )
+``` 
 
-table_mean <- ANES_mean %>%
-  group_by(Political_Party) %>%
-  summarise_at(vars(Voting_Level_Difficulty_Code), list(Had_Difficulty_Voting_Mean = mean))
+```{r Stacked Bar to show Yes/No Difficulty, echo = FALSE, message=FALSE}
 
-plt1 <- ggplot(data=table_mean, aes(x=Political_Party, y=Had_Difficulty_Voting_Mean, fill=Political_Party))+   geom_bar(stat="identity")+
-  scale_fill_manual(values=c("#1c2e4a", "#900d09"))+
-  theme(legend.position = "none"
-        , panel.grid.major = element_blank()
-        , panel.grid.minor = element_blank()
-        )
-
+plt1 <- ggplot(data = ANES_mean, aes( y = Political_Party, fill =  factor(Voting_Level_Difficulty_Code) ))  +  
+    geom_bar() + coord_flip() + scale_fill_manual(values=c("#D3D3D3", "#900d09"))+ labs(title = "Partywise Who Faced Difficulty", x = "Number of Voters", y = "Political Party",fill="Level of Difficulty") + geom_text(stat='count',aes(label=..count..),vjust=-0.7)+labs( fill = "Faced Difficulty?") +scale_fill_manual(values=c("#B0C4DE", "#900d09"), labels = c("No", "Yes"))
 ```
+
+
 
 ```{r Voting Level Difficulty comparison, echo = FALSE, message=FALSE}
-ANES_levels <- ANES %>%
-  group_by(Political_Party) %>%
-  summarise_at(vars(Voting_Level_Difficulty_Code), list(Voting_Level_Difficulty_Code = mean))
+plt2 <- ggplot(data = ANES, aes( y = Political_Party, fill =  factor(Voting_Level_Difficulty_Code) ))  +  
+    geom_bar() + coord_flip() + scale_fill_brewer(palette = 17)+ labs(title = "Partywise Level of Difficulty", x = "Number of Voters", y = "Political Party",fill="Level of Difficulty")
 
-plt2 <- ggplot(data=ANES_levels, aes(x=Political_Party, y=Voting_Level_Difficulty_Code, fill=Political_Party))+   geom_bar(stat="identity")+
-  scale_fill_manual(values=c("#1c2e4a", "#900d09"))+
-  theme(legend.position = "none"
-        , panel.grid.major = element_blank()
-        , panel.grid.minor = element_blank()
-        )
 ```
 
-```{r plot on same line, echo = FALSE, message=FALSE}
-grid.arrange(plt1, plt2, ncol=2)
-
+```{r plot on same line, echo = FALSE, message=FALSE, fig.height= 4, fig.width=8, fig.cap=' Bar graphs of voter difficulty by political party'}
+grid.arrange(plt2, plt1, ncol=2)
 ```
 
 We will test if one party is more likely to experience difficulty voting than the other. To test this, we can use a two-sample t-test. The null hypothesis for this t-test can be expressed as follows:
