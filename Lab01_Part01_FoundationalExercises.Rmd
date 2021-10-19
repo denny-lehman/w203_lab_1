@@ -50,74 +50,54 @@ We are given that Ho is when p = 1/2. p is the probability that Xi = Yi
 
 $$ H_o: p=\frac{1}{2}, \space p=P(X_i = Y_i)$$
 Let's define a trial as flipping both coins at the same time, where coin X has outcomes 0 and 1 and coin Y has 0 and 1
-$$\begin{aligned}
-X &\in \{0,1\} \\ 
-Y &\in \{0,1\} \\
-\theta_1 &= \text{outcome of the event, which is two coin flips}\\
-\text{Event } & \text{space of } \theta_1\\
-\theta_1 &\in \{\{0,0\},\{0,1\},\{1,0\},\{1,1\}\}\\
-P(X=0) &= \frac{1}{2} \\
-P(Y=0) &= \frac{1}{2} \\
-P(X=1) &= \frac{1}{2} \\
-P(Y=1) &= \frac{1}{2} \\
-P(X=x,Y=y) &= P(X=x)*P(Y=y)
-\end{aligned}
-$$
-
+$$X \in \{0,1\}$$
+$$Y \in \{0,1\}$$
+$$\theta_1 = \text{outcome of the event, which is two coin flips}$$
+$$\text{Event } \text{space of } \theta_1\\$$
+$$\theta_1 \in \{\{0,0\},\{0,1\},\{1,0\},\{1,1\}\}$$
+$$P(X=0) = \frac{1}{2} \\$$
+$$P(Y=0) = \frac{1}{2} \\$$
+$$P(X=1) = \frac{1}{2} \\$$
+$$P(Y=1) = \frac{1}{2} \\$$
+$$P(X=x,Y=y) = P(X=x)*P(Y=y)$$
 We know that each flip of the pair has the following potential outcomes:
-$$\begin{aligned}
-P(X_i=Y_i) =& P(X_i=0,Y_i=0) + P(X_i=1,Y_i=1) \\
-P(X_i=Y_i|H_o) =& \space 0.5 = P(X_i=0,Y_i=0) + P(X_i=1,Y_i=1) \\
-P(X_i=0,Y_i=0)=& \frac{1}{4} \\
-P(X_i=1,Y_i=1)=& \frac{1}{4}
-\end{aligned}
-$$
+$$P(X_i=Y_i) = P(X_i=0,Y_i=0) + P(X_i=1,Y_i=1)$$
+$$P(X_i=Y_i|H_o) = \space 0.5 = P(X_i=0,Y_i=0) + P(X_i=1,Y_i=1)$$
+$$P(X_i=0,Y_i=0)= \frac{1}{4}$$
+$$P(X_i=1,Y_i=1)= \frac{1}{4}$$
 
 We are also given that our test statistic, theta_hat, will be equal to 
 
-$$
-\begin{aligned}
-\hat{\theta_n} &= \sum^{n}_{i=1}  X_i+Y_i\\
-\hat{\theta_3} =X_1 +Y_1+ & X_2+Y_2+X_3+Y_3
-\end{aligned}
-$$
+$$\hat{\theta_n} = \sum^{n}_{i=1}  X_i+Y_i$$
+$$\hat{\theta_3} =X_1 +Y_1+ X_2+Y_2+X_3+Y_3$$
 
 From the problem definition, we reject the null when our test statistic theta is 0 or 6 after 3 flips of pairs of coins. Type I error is thus
-$$\begin{aligned}
-\alpha &= P(reject \space H_o|H_o)\\
-\alpha &= P(\hat{\theta_3}\in \{0,6\} |p=\frac{1}{2})\\
-\alpha &= P(\hat{\theta_3}=0|p=\frac{1}{2})+P(\hat{\theta_3}=6|p=\frac{1}{2})
-\end{aligned}$$
+
+$$\alpha = P(reject \space H_o|H_o)$$
+$$\alpha = P(\hat{\theta_3}\in \{0,6\} |p=\frac{1}{2})$$
+$$\alpha = P(\hat{\theta_3}=0|p=\frac{1}{2})+P(\hat{\theta_3}=6|p=\frac{1}{2})$$
 Solve for each term using the binomial distribution formula
 
-$$\begin{aligned}\text{binomial distribution formula} \\
-P_x = nCx\space q^x(1-q)^{n-x}\\
-\text{q was chosen to avoid confusion with p from the problem statement}
-\end{aligned}
-$$
-$$\text{solve for } P( \hat{\theta_3}=0|p=\frac{1}{2})\\
-\text{where q is } P(X_i=0,Y_i=0)=1/4\\
-\hat{\theta_3} = 0\text{ means that after 3 three trials, the test statistic has value of 0 (all 0's) }\\
-P(\hat{\theta_3}=0|p=\frac{1}{2}) = 0C3 \space q^3*(1-q)^0\\
-P(\hat{\theta_3}=0|p=\frac{1}{2}) = (1)(1/4)^3(1)\\
-P(\hat{\theta_3}=0|p=\frac{1}{2})=(1/4)^3
-$$
-$$\begin{aligned}
-solve \space for \space P(\hat{\theta_3}=6|p=\frac{1}{2})\\
-\text{where q is } P(X_i=1,Y_i=1)=1/4\\
-\hat{\theta_3} = 6\text{ means after all three trials, the test statistic has the value of 6 (all 1's)}\\
-P(\hat{\theta_3}=6|p=\frac{1}{2}) = 3C3 \space q^3*(1-q)^0\\
-P(\hat{\theta_3}=6|p=\frac{1}{2}) = (1)(1/4)^3(1)\\
-P(\hat{\theta_3}=6|p=\frac{1}{2})=(1/4)^3
-\end{aligned}$$
+$$\text{binomial distribution formula}$$
+$$P_x = nCx\space * q^x(1-q)^{n-x}$$
+q was chosen to avoid confusion with p from the problem statement. 
+Next, solve for $P( \hat{\theta_3}=0|p=\frac{1}{2})$ where q is $P(X_i=0,Y_i=0)=1/4$
+$$\hat{\theta_3} = 0\text{ means that after 3 three trials, the test statistic has value of 0 (all 0's) }$$
+$$P(\hat{\theta_3}=0|p=\frac{1}{2}) = 0C3 \space q^3*(1-q)^0$$
+$$P(\hat{\theta_3}=0|p=\frac{1}{2}) = (1)(1/4)^3(1)$$
+$$P(\hat{\theta_3}=0|p=\frac{1}{2})=(1/4)^3$$
+
+solve for $P(\hat{\theta_3}=6|p=\frac{1}{2})$
+$$\text{where q is } P(X_i=1,Y_i=1)=1/4\\$$
+$$\hat{\theta_3} = 6\text{ means after all three trials, the test statistic has the value of 6 (all 1's)}$$
+$$P(\hat{\theta_3}=6|p=\frac{1}{2}) = 3C3 \space q^3*(1-q)^0$$
+$$P(\hat{\theta_3}=6|p=\frac{1}{2}) = (1)(1/4)^3(1)$$
+$$P(\hat{\theta_3}=6|p=\frac{1}{2})=(1/4)^3$$
 
 now substitute back in for alpha
-$$\begin{aligned}
-\alpha = P(\hat{\theta_3}=0|H_o) + P(\hat{\theta_3}=6|H_o) \\
-\alpha = (\frac{1}{4})^3 + (\frac{1}{4})^3 \\
-\alpha = \frac{2}{64} = \frac{1}{32}
-\end{aligned}
-$$
+$$\alpha = P(\hat{\theta_3}=0|H_o) + P(\hat{\theta_3}=6|H_o) $$
+$$\alpha = (\frac{1}{4})^3 + (\frac{1}{4})^3 $$
+$$\alpha = \frac{2}{64} = \frac{1}{32}$$
 
 
 
@@ -127,45 +107,44 @@ $$
 The power of our test is the Probability that we have successfully rejected the null hypothesis when the alternative is true. $Power = 1 - \beta$
 Where $\beta$ is the type 2 error, or the false negative rate. Type 2 error occurs when we fail to reject the null hypothesis when we should.
 
-$$
-H_a: p=\frac{3}{4}, \space p=P(X_i = Y_i)\\
-Power = P(reject \space null|H_a) \\
-$$
+$$H_a: p=\frac{3}{4}, \space p=P(X_i = Y_i)$$
+$$Power = P(reject \space null|H_a)$$
 
 
 We assume that the likelihood for heads and tails remains the equal, but the likelihood of getting $X_i = Y_i$ changes to $\frac{3}{4}$. Therefore, 
-$$
-P(X_i=Y_i|H_a)=3/4 \\
-P(X_i=Y_i) = P(X_i=0,Y_i=0)+P(X_i=1,Y_i=1)\\
-P(X_i=0,Y_i=0)=P(X_i=1,Y_i=1)\\
-\therefore\\
-P(X_i=0,Y_i=0) = 3/8 \\
-P(X_i=1,Y_i=1) = 3/8 \\
-P(X_i=0,Y_i=1) = 1/8\\
-P(X_i=1,Y_i=0) = 1/8\\
-$$
+
+$$P(X_i=Y_i|H_a)=3/4$$
+$$P(X_i=Y_i) = P(X_i=0,Y_i=0)+P(X_i=1,Y_i=1)$$
+$$P(X_i=0,Y_i=0)=P(X_i=1,Y_i=1)$$
+$$\therefore$$
+$$P(X_i=0,Y_i=0) = 3/8$$
+$$P(X_i=1,Y_i=1) = 3/8 $$
+$$P(X_i=0,Y_i=1) = 1/8$$
+$$P(X_i=1,Y_i=0) = 1/8$$
+
+
 
 When fail to reject
-$$\hat{\theta_3} = X_1 + Y_1 + X_2 + Y_2 +X_3 + Y_3\\
-\text{reject Ho when } \hat{\theta_3} = 0 \space or \space  \hat{\theta_3} = 6\\
-Power = P(reject \space null|H_a)\\
-Power = P(\hat{\theta_3} \in \{0,6\}|p=\frac{3}{4})\\
-Power=P(\hat{\theta_3}=0|p=3/4) + P(\hat{\theta_3}=6|p=3/4)
-$$
+$$\hat{\theta_3} = X_1 + Y_1 + X_2 + Y_2 +X_3 + Y_3$$
+$\text{reject Ho when } \hat{\theta_3} = 0 \space$ or $\space  \hat{\theta_3} = 6$
+$$Power = P(reject \space null|H_a)$$
+$$Power = P(\hat{\theta_3} \in \{0,6\}|p=\frac{3}{4})$$
+$$Power=P(\hat{\theta_3}=0|p=3/4, q=3/8) + P(\hat{\theta_3}=6|p=3/4)$$
+
 
 Now we solve for the two terms
-$$P(\hat{\theta_3}=0|p=3/4) = 3C0 * (3/8)^3*(1-3/8)^0\\
-=(1)(3/8)^3(1)\\
-=\frac{27}{512}\\
-P(\hat{\theta_3}=6|p=3/4) = 3C3 * (3/8)^3*(1-3/8)^0\\
-=(1)(3/8)^3(1)\\
-=\frac{27}{512}\\
-$$
-$$Power=P(\hat{\theta_3}=0|p=3/4) + P(\hat{\theta_3}=6|p=3/4)\\
-Power = (\frac{3}{8})^3+(\frac{3}{8})^3\\
-Power = 2*(\frac{3}{8})^3\\
-Power \approx 0.105
-$$
+$$P(\hat{\theta_3}=0|p=3/4) = 3C0 * (3/8)^3*(1-3/8)^0$$
+$$=(1)(3/8)^3(1)$$
+$$=\frac{27}{512}$$
+$$P(\hat{\theta_3}=6|p=3/4) = 3C3 * (3/8)^3*(1-3/8)^0$$
+$$=(1)(3/8)^3(1)$$
+$$=\frac{27}{512}$$
+
+$$Power=P(\hat{\theta_3}=0|p=3/4) + P(\hat{\theta_3}=6|p=3/4)$$
+$$Power = (\frac{3}{8})^3+(\frac{3}{8})^3$$
+$$Power = 2*(\frac{3}{8})^3$$
+$$Power \approx 0.105$$
+
 
 ## Wrong Test, Right Data
 ### $Our$ $Analysis:$
@@ -251,7 +230,7 @@ $Disadvantage:$ Since these tests do not use the metric information they loose s
   3. The Data is Ordinal Variable
 
 ```{r DATA Read, echo=FALSE, include=FALSE}
-setwd("C:\\Users\\savit\\lab_1\\datasets")
+setwd("datasets")
 legislator_full_data <- read_csv("legislators-current.csv", )
 ```
 ##  Data and Methodology
