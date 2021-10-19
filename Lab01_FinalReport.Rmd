@@ -95,22 +95,41 @@ In order to operationalize the concept of difficulty voting, we first identify t
 ## Add concern with sample universe for difficulty question
 ### Insert Distribution Table Here
 ```{r Table, echo=FALSE, results='asis'}
+# tbl <- ANES %>%
+#   mutate(
+#     print_party_counts = case_when(
+#       
+#     )
+#   )
+# 
+# summary_table <- anes %>%
+#   mutate(
+#     print_vote_2016 = case_when(
+#       voted_2016 == 'Voted' ~ 'Voted 2016',
+#       voted_2016 == 'Did not Vote' ~ 'Did not Vote 2016'),
+#     print_vote_2018 = case_when(
+#       voted_2018 == 'Voted' ~ 'Voted 2018',
+#       voted_2018 == 'Did not Vote' ~ 'Did not Vote 2018')) %$%
+#   prop.table(
+#     table(
+#       print_vote_2016,
+#       print_vote_2018))
+
 tbl <- table(ANES$Political_Party)
 
 tbl1 <- kable(
   addmargins(tbl),
-  caption = 'Frequency Distribution of Political Party', 
+  caption = 'Frequency Distribution of Political Party',
   booktabs = TRUE,
 )
 
 tbl2 <- kable(
     prop.table(tbl),
-    caption = 'Distribution of Political Party', 
-    booktabs = TRUE, 
+    caption = 'Distribution of Political Party',
+    booktabs = TRUE,
 )
 
-tbl1
-tbl2
+knitr::kable(list(tbl1, tbl2))
 
 ```
 
