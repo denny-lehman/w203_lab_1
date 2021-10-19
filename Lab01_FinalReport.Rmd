@@ -11,6 +11,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+install.packages("kableExtra")
+```
+
 ```{r load packages, echo=FALSE, warning=FALSE, message=FALSE}
 library(plyr)
 library(dplyr)
@@ -19,6 +23,7 @@ library(knitr)
 library(tidyverse) 
 library(haven)
 library(gridExtra)
+library(kableExtra)
 theme_set(theme_bw())
 options(tinytex.verbose = TRUE)
 ```
@@ -67,14 +72,17 @@ df <- df %>%
     )
 
 summary_table <- kable(
-    df,
-    digits = 2,
-    caption = 'Distribution of Political Party',
-    booktabs = TRUE,
-)
-
+  df
+  , digits = 2
+  , caption = 'Distribution of Political Party'
+  , booktabs = TRUE
+  # , latex_options = "HOLD_position"
+  ) %>%
+kable_styling(latex_options = "HOLD_position")
 summary_table
+
 ```
+
 
 Table 1 shows the frequencies of Democrats and Republicans in our dataset and the proportion of each group, which is roughly 54% Democrat and 46% Republican.
 
