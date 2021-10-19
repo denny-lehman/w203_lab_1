@@ -93,44 +93,30 @@ Additionally, all sample members who completed the post-election survey from the
 
 In order to operationalize the concept of difficulty voting, we first identify the Democratic and Republican voters. Per guidance from an article written by political scientists\footnote{https://www.sciencedirect.com/journal/electoral-studies}, we group voters into political parties by the direction they "lean." In other words, a voter that indicates they "lean democratic" is classified as a Democrat and vice versa. The tables below describe these distributions.
 ## Add concern with sample universe for difficulty question
-### Insert Distribution Table Here
-```{r Table, echo=FALSE, results='asis'}
-# tbl <- ANES %>%
-#   mutate(
-#     print_party_counts = case_when(
-#       
-#     )
-#   )
-# 
-# summary_table <- anes %>%
-#   mutate(
-#     print_vote_2016 = case_when(
-#       voted_2016 == 'Voted' ~ 'Voted 2016',
-#       voted_2016 == 'Did not Vote' ~ 'Did not Vote 2016'),
-#     print_vote_2018 = case_when(
-#       voted_2018 == 'Voted' ~ 'Voted 2018',
-#       voted_2018 == 'Did not Vote' ~ 'Did not Vote 2018')) %$%
-#   prop.table(
-#     table(
-#       print_vote_2016,
-#       print_vote_2018))
 
+```{r Table, echo=FALSE}
 tbl <- table(ANES$Political_Party)
+tbl_p <- prop.table(tbl)
 
-tbl1 <- kable(
-  addmargins(tbl),
-  caption = 'Frequency Distribution of Political Party',
-  booktabs = TRUE,
-)
 
-tbl2 <- kable(
-    prop.table(tbl),
+df <- data.frame(tbl, tbl_p)
+df <- subset(df, select=-c(Var1.1))
+df <- df %>% 
+  rename(
+    Party = Var1,
+    Frequency = Freq,
+    Proportion = Freq.1,
+    )
+
+
+summary_table <- kable(
+    df,
+    digits = 2,
     caption = 'Distribution of Political Party',
     booktabs = TRUE,
 )
 
-knitr::kable(list(tbl1, tbl2))
-
+summary_table
 ```
 
 Table 1 shows the frequencies of Democrats and Republicans in our dataset. And, Table 1 shows the proportion of each group, which is roughly 54% Democrat and 46% Republican.
