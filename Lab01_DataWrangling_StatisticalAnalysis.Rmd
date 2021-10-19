@@ -23,7 +23,8 @@ library(knitr)
 options(tinytex.verbose = TRUE)
 ```
 
-Load the entire dataset
+Load the entire dataset. This data set has been obtained from the American National Election Studies (ANES) conducts surveys of voters in the United States, with a flagship survey occurring immediately before and after each presidential election. This is our source of truth.
+
 ```{r DATA Read, echo=FALSE, include=FALSE}
 anes_2020_full_data <- read_csv("anes_timeseries_2020_csv_20210719.csv")
 #head(anes_2020_full_data)
