@@ -8,7 +8,7 @@ output:
 ---
 # Data Wrangling
 
-The ANES project has been going since 1948 and it will continue for many years in the future. Which means our data analysis will continue to statistically analyze this data. The data cleanup and wrangling is the most time consuming part of any statistical analysis test that uses such a large amount of data. We do not want to repeat this expensive process every time we run the test. We want to generate a smaller, clean and processed data ready to be consumed by the analysis process. This file will create a functionality that will generate a repeatable  clean and usable data pipeline  for our data analysis year after year.
+This data set anes_timeseries_2020_csv_20210719.csv has been obtained from the American National Election Studies (ANES), who conducts surveys of voters in the United States, with a flagship survey occurring immediately before and after each presidential election. This is our source of truth.The ANES project has been going since 1948 and it will continue for many years in the future. Which means our data analysis will continue to statistically analyze this data. The data cleanup and wrangling is the most time consuming part of any statistical analysis test that uses such a large amount of data. WE do not want to repeat this expensive process every time we run the test. We want to generate a smaller, clean and processed data ready to be consumed by the analysis process. This file will create a functionality that will generate a repeatable  clean and usable data pipeline  for our data analysis.
 
  
 
@@ -23,8 +23,7 @@ library(knitr)
 options(tinytex.verbose = TRUE)
 ```
 
-Load the entire dataset. This data set has been obtained from the American National Election Studies (ANES) conducts surveys of voters in the United States, with a flagship survey occurring immediately before and after each presidential election. This is our source of truth.
-
+Load the entire dataset
 ```{r DATA Read, echo=FALSE, include=FALSE}
 anes_2020_full_data <- read_csv("anes_timeseries_2020_csv_20210719.csv")
 #head(anes_2020_full_data)
@@ -81,6 +80,10 @@ ANES <- anes_2020_subset_filtered %>%
 #head(ANES)
 ```
 
+```{r}
+?write.csv
+
+```
 
 ```{r Write dataset to a csv, echo=FALSE}
 write.csv(ANES, "anes.csv",  row.names = FALSE)
